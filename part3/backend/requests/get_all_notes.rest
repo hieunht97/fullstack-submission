@@ -1,10 +1,25 @@
-GET http://localhost:3001/api/notes/
+GET http://localhost:3003/api/users/
+
+###
+POST http://localhost:3003/api/blogs/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer qeisdasdwqewqaowqewqeqwe
+
+{
+    "title": "ok ban",
+    "author": true
+}
 
 ###
 POST http://localhost:3001/api/notes/ HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ
 
 {
-    "content": "co gi dau ban",
+    "content": "ok ban",
     "important": true
 }
+
+###
+DELETE  http://localhost:3001/api/notes/65974141dced52e40f92b40a HTTP/1.1
+content-type: application/json

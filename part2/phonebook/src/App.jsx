@@ -104,9 +104,7 @@ const App = () => {
               );
             })
             .catch((error) => {
-              setErrorMessages(
-                `Information of ${existingPerson.name} has already been removed from the server`
-              );
+              setErrorMessages(error.response.data.error);
               setTimeout(() => {
                 setErrorMessages(null);
               }, 5000);
@@ -116,15 +114,24 @@ const App = () => {
         alert(`${newName} is already added to phonebook`);
       }
     } else {
-      personService.create(nameObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-        setMessages(`Successfully added ${newName}`);
-        setTimeout(() => {
-          setMessages(null);
-        }, 3000);
-      });
+      personService
+        .create(nameObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
+          setMessages(`Successfully added ${newName}`);
+          setTimeout(() => {
+            setMessages(null);
+          }, 3000);
+        })
+        .catch((error) => {
+          setErrorMessages(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessages(null);
+          }, 3000);
+          console.log(error.response.data.error);
+        });
     }
   };
 

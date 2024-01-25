@@ -1,0 +1,29 @@
+{
+  "notes": [
+    {
+      "content": "the app state is in redux store",
+      "important": true,
+      "id": "1"
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": "2"
+    },
+    {
+      "id": "6c9a",
+      "content": "testing new note",
+      "important": false
+    },
+    {
+      "id": "7f05",
+      "content": "Hieu Tran was here",
+      "important": false
+    },
+    {
+      "id": "2e90",
+      "content": "I just killed someone, I am here to confess",
+      "important": false
+    }
+  ]
+}
