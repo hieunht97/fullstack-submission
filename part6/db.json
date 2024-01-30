@@ -24,6 +24,11 @@
       "id": "2e90",
       "content": "I just killed someone, I am here to confess",
       "important": false
+    },
+    {
+      "id": "15f2",
+      "content": "testing mutate",
+      "important": true
     }
   ]
 }
