@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-const Blog = ({ blog, deleteBlog, user, addLike }) => {
+const Blog = ({ blog, deleteBlog, addLike }) => {
   const [visible, setVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [like, setLike] = useState(blog.likes);
   const hideWhenVisible = { display: visible ? "none" : "" };
   const showWhenVisible = { display: visible ? "" : "none" };
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    if (blog) {
+      fetchUser(blog.user);
+    }
+  }, [blog]);
+
+  const fetchUser = async (userId) => {
+    try {
+      const response = await fetch(`/api/users/${userId}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUserName(userData.name);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -19,10 +39,10 @@ const Blog = ({ blog, deleteBlog, user, addLike }) => {
         title: blog.title,
         author: blog.author,
         likes: updatedLike,
+        url: blog.url,
       });
       return updatedLike;
     });
-    // setButtonVisible(!buttonVisible);
   };
 
   const updateUnlike = async (event) => {
@@ -33,10 +53,10 @@ const Blog = ({ blog, deleteBlog, user, addLike }) => {
         title: blog.title,
         author: blog.author,
         likes: updatedLike,
+        url: blog.url,
       });
       return updatedLike;
     });
-    // setButtonVisible(!buttonVisible);
   };
 
   const blogStyle = {
@@ -49,7 +69,9 @@ const Blog = ({ blog, deleteBlog, user, addLike }) => {
 
   return (
     <div style={blogStyle} className="blogPost">
-      {blog.title} - {blog.author}{" "}
+      <Link to={`/blogs/${blog.id}`}>
+        {blog.title} - {blog.author}
+      </Link>{" "}
       <button style={hideWhenVisible} onClick={toggleVisibility}>
         view
       </button>
@@ -63,7 +85,9 @@ const Blog = ({ blog, deleteBlog, user, addLike }) => {
         ) : (
           <button onClick={updateUnlike}>unlike</button>
         )}
-        <br /> Posted by {user}
+        <br />
+        Url: <Link to={blog.url}>{blog.url}</Link>
+        <br /> Posted by {userName}
         <br /> <button onClick={deleteBlog}>delete</button>
       </div>
     </div>

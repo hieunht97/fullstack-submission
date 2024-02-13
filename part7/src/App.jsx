@@ -1,4 +1,15 @@
 import { useState } from "react";
+import styled from "styled-components";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Alert,
+} from "@mui/material";
+
 import {
   Routes,
   Route,
@@ -7,6 +18,35 @@ import {
   useNavigate,
   useMatch,
 } from "react-router-dom";
+
+const Button = styled.button`
+  background: Bisque;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Chocolate;
+  border-radius: 3px;
+`;
+
+const Input = styled.input`
+  margin: 0.25em;
+`;
+
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+`;
+
+const Navigation = styled.div`
+  background: BurlyWood;
+  padding: 1em;
+`;
+
+const Footer = styled.div`
+  background: Chocolate;
+  padding: 1em;
+  margin-top: 1em;
+`;
 
 const Home = () => (
   <div>
@@ -40,13 +80,21 @@ const Note = ({ note }) => {
 const Notes = ({ notes }) => (
   <div>
     <h2>Notes</h2>
-    <ul>
-      {notes.map((note) => (
-        <li key={note.id}>
-          <Link to={`/notes/${note.id}`}>{note.content}</Link>
-        </li>
-      ))}
-    </ul>
+
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map((note) => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>{note.user}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div>
 );
 
@@ -66,7 +114,7 @@ const Login = (props) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    props.onLogin("hieunht97");
+    props.onLogin("mluukkai");
     navigate("/");
   };
 
@@ -75,12 +123,16 @@ const Login = (props) => {
       <h2>login</h2>
       <form onSubmit={onSubmit}>
         <div>
-          username: <input />
+          username:
+          <Input />
         </div>
         <div>
-          password: <input type="password" />
+          password:
+          <Input type="password" />
         </div>
-        <button type="submit">login</button>
+        <Button type="submit" primary="">
+          login
+        </Button>
       </form>
     </div>
   );
@@ -109,9 +161,14 @@ const App = () => {
   ]);
 
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const login = (user) => {
     setUser(user);
+    setMessage(`welcome ${user}`);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
   };
 
   const padding = {
@@ -124,16 +181,17 @@ const App = () => {
     : null;
 
   return (
-    <div>
-      <div>
+    <Page>
+      {message && <Alert severity="success">{message}</Alert>}
+      <Navigation>
         <Link style={padding} to="/">
-          Home
+          home
         </Link>
         <Link style={padding} to="/notes">
-          Notes
+          notes
         </Link>
         <Link style={padding} to="/users">
-          Users
+          users
         </Link>
         {user ? (
           <em>{user} logged in</em>
@@ -142,7 +200,7 @@ const App = () => {
             login
           </Link>
         )}
-      </div>
+      </Navigation>
 
       <Routes>
         <Route path="/notes/:id" element={<Note note={note} />} />
@@ -155,11 +213,10 @@ const App = () => {
         <Route path="/" element={<Home />} />
       </Routes>
 
-      <footer>
-        <br />
+      <Footer>
         <em>Note app, Department of Computer Science 2024</em>
-      </footer>
-    </div>
+      </Footer>
+    </Page>
   );
 };
 

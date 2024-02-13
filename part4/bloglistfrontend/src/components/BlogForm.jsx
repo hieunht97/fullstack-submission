@@ -1,20 +1,18 @@
 import { useState } from "react";
+import { newBlog } from "../reducers/blogReducer";
+import { setNotification } from "../reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
-const BlogForm = ({ createBlog }) => {
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newTitle, setNewTitle] = useState("");
-  const [newLikes, setNewLikes] = useState("");
-
+const BlogForm = () => {
+  const dispatch = useDispatch();
   const addBlog = (event) => {
     event.preventDefault();
-    createBlog({
-      title: newTitle,
-      author: newAuthor,
-      likes: newLikes,
-    });
-    setNewAuthor("");
-    setNewTitle("");
-    setNewLikes("");
+    const title = event.target.title.value;
+    const author = event.target.author.value;
+    const url = event.target.url.value;
+    const likes = event.target.likes.value;
+    dispatch(newBlog({ title, author, likes, url }));
+    dispatch(setNotification("you created a new note"));
   };
 
   return (
@@ -23,30 +21,16 @@ const BlogForm = ({ createBlog }) => {
       <form onSubmit={addBlog}>
         <div>
           Blog title:{" "}
-          <input
-            id="title"
-            value={newTitle}
-            onChange={(event) => setNewTitle(event.target.value)}
-            placeholder="enter title"
-          />
+          <input id="title" name="title" placeholder="enter title" />
         </div>
         <div>
-          Author:{" "}
-          <input
-            id="author"
-            value={newAuthor}
-            onChange={(event) => setNewAuthor(event.target.value)}
-            placeholder="enter author"
-          />
+          Author: <input id="author" name="author" placeholder="enter author" />
         </div>
         <div>
-          Likes:{" "}
-          <input
-            id="likes"
-            value={newLikes}
-            onChange={(event) => setNewLikes(event.target.value)}
-            placeholder="enter likes"
-          />
+          Url: <input id="url" name="url" placeholder="enter URL" />
+        </div>
+        <div>
+          Likes: <input id="likes" name="likes" placeholder="enter likes" />
         </div>
         <button type="submit">add</button>
       </form>
